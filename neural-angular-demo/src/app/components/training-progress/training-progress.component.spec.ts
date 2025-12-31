@@ -56,11 +56,11 @@ describe('TrainingProgressComponent', () => {
     };
     
     component.currentTraining = mockTraining;
-    expect(component.getElapsedTime()).toBe('5.6');
+    expect(component.getEpochElapsedTime()).toBe('5.6');
   });
 
   it('should return 0.0 elapsed time when no training data', () => {
     component.currentTraining = null;
-    expect(component.getElapsedTime()).toBe('0.0');
+    expect(component.getEpochElapsedTime()).toBe('0.0');
   });
 });

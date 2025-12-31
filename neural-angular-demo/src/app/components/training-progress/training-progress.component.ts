@@ -19,7 +19,7 @@ export class TrainingProgressComponent {
     return (this.currentTraining?.accuracy ?? 0) * 100;
   }
 
-  getElapsedTime(): string {
+  getEpochElapsedTime(): string {
     return this.currentTraining ? this.currentTraining.elapsed_time.toFixed(1) : '0.0';
   }
 }
