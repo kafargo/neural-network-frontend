@@ -2,11 +2,11 @@
 nixPkgs = ['nodejs-18_x', 'npm-9_x']
 
 [phases.install]
-cmds = ['cd neural-network-frontend && npm ci --include=dev --prefer-offline']
-cacheDirectories = ['neural-network-frontend/node_modules']
+cmds = ['cd neural-network-frontend && npm ci --include=dev']
 
 [phases.build]
-cmds = ['npm run build']
+cmds = ['cd neural-network-frontend && npm run build:prod']
+dependsOn = ['install']
 
 [start]
-cmd = 'npm start'
+cmd = 'cd neural-network-frontend && node server.js'
