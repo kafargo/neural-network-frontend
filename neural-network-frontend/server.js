@@ -8,16 +8,18 @@ const port = process.env.PORT || 3000;
 const isProduction = process.env.NODE_ENV === "production";
 
 // Check if build directory exists
-const distPath = path.join(__dirname, "dist/neural-angular-demo/browser");
+const distPath = path.join(__dirname, "dist/neural-network-frontend/browser");
 
 if (!isProduction) {
   console.log("Checking for dist directory at:", distPath);
 }
 
 if (!fs.existsSync(distPath)) {
-  console.error("ERROR: dist/neural-angular-demo/browser directory not found!");
   console.error(
-    "Make sure to run 'npm run build:prod' before starting the server"
+    "ERROR: dist/neural-network-frontend/browser directory not found!",
+  );
+  console.error(
+    "Make sure to run 'npm run build:prod' before starting the server",
   );
   process.exit(1);
 }
@@ -38,26 +40,26 @@ app.get("/health", (req, res) => {
   res.status(200).json({
     status: "healthy",
     timestamp: new Date().toISOString(),
-    service: "neural-network-angular-demo",
+    service: "neural-network-frontend",
     port: port,
   });
 });
 
 // Serve static files from the Angular app build directory
 app.use(
-  express.static(path.join(__dirname, "dist/neural-angular-demo/browser"))
+  express.static(path.join(__dirname, "dist/neural-network-frontend/browser")),
 );
 
 // Handle Angular routing - return all requests to Angular index.html
 app.get("*", (req, res) => {
   res.sendFile(
-    path.join(__dirname, "dist/neural-angular-demo/browser/index.html")
+    path.join(__dirname, "dist/neural-network-frontend/browser/index.html"),
   );
 });
 
 app
   .listen(port, "0.0.0.0", () => {
-    console.log(`Neural Network Angular Demo running on port ${port}`);
+    console.log(`Neural Network Frontend running on port ${port}`);
     console.log(`Health check available at: http://0.0.0.0:${port}/health`);
   })
   .on("error", (err) => {
