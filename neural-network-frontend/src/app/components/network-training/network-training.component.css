@@ -10,14 +10,14 @@
 }
 
 .training-header h2 {
-  color: #333;
+  color: #1a3263;
   font-size: 2.5rem;
   margin-bottom: 15px;
   font-weight: 600;
 }
 
 .training-header p {
-  color: #666;
+  color: #547792;
   font-size: 1.2rem;
   margin: 0;
 }
@@ -32,7 +32,7 @@
 }
 
 .config-panel h3 {
-  color: #4a90e2;
+  color: #1a3263;
   font-size: 1.5rem;
   margin-bottom: 30px;
   font-weight: 600;
@@ -74,7 +74,7 @@
 
 .param-item input[type="number"]:focus {
   outline: none;
-  border-color: #4a90e2;
+  border-color: #547792;
 }
 
 .help-text {
@@ -88,7 +88,7 @@
 }
 
 .start-training-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1a3263 0%, #547792 100%);
   color: white;
   border: none;
   padding: 15px 30px;
@@ -97,12 +97,12 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 15px rgba(26, 50, 99, 0.3);
 }
 
 .start-training-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 20px rgba(26, 50, 99, 0.4);
 }
 
 .start-training-button:disabled {
@@ -117,8 +117,8 @@
 }
 
 .continue-button {
-  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-  color: white;
+  background: linear-gradient(135deg, #fab95b 0%, #e5a84d 100%);
+  color: #1a3263;
   border: none;
   padding: 15px 30px;
   border-radius: 8px;
@@ -126,12 +126,12 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+  box-shadow: 0 4px 15px rgba(250, 185, 91, 0.3);
 }
 
 .continue-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+  box-shadow: 0 6px 20px rgba(250, 185, 91, 0.4);
 }
 
 .error-message {

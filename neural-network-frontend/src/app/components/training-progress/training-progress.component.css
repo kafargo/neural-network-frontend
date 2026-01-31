@@ -8,7 +8,7 @@
 }
 
 .training-progress h3 {
-  color: #4a90e2;
+  color: #1a3263;
   font-size: 1.5rem;
   margin-bottom: 25px;
   font-weight: 600;
@@ -31,7 +31,7 @@
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(90deg, #1a3263 0%, #547792 100%);
   border-radius: 10px;
   transition: width 0.5s ease;
   position: relative;
@@ -80,7 +80,7 @@
   padding: 10px 15px;
   background: white;
   border-radius: 6px;
-  border-left: 4px solid #4a90e2;
+  border-left: 4px solid #547792;
 }
 
 .stat-label {
@@ -94,12 +94,12 @@
 }
 
 .training-complete {
-  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-  color: white;
+  background: linear-gradient(135deg, #fab95b 0%, #e5a84d 100%);
+  color: #1a3263;
   border-radius: 12px;
   padding: 40px;
   text-align: center;
-  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+  box-shadow: 0 4px 15px rgba(250, 185, 91, 0.3);
   margin-bottom: 30px;
 }
 
@@ -117,7 +117,7 @@
 }
 
 .training-complete h3 {
-  color: white;
+  color: #1a3263;
   font-size: 2rem;
   margin-bottom: 20px;
   font-weight: 600;
@@ -130,12 +130,12 @@
 .final-accuracy {
   font-size: 1.2rem;
   margin: 0;
-  color: rgba(255, 255, 255, 0.95);
+  color: rgba(26, 50, 99, 0.85);
 }
 
 .final-accuracy strong {
   font-size: 1.4rem;
-  color: white;
+  color: #1a3263;
 }
 
 @keyframes shimmer {

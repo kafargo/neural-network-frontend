@@ -10,14 +10,14 @@
 }
 
 .test-header h2 {
-  color: #333;
+  color: #1a3263;
   font-size: 2.5rem;
   margin-bottom: 15px;
   font-weight: 600;
 }
 
 .test-header p {
-  color: #666;
+  color: #547792;
   font-size: 1.2rem;
   margin: 0;
 }
@@ -53,25 +53,25 @@
 }
 
 .test-button.primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1a3263 0%, #547792 100%);
   color: white;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 15px rgba(26, 50, 99, 0.3);
 }
 
 .test-button.primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 20px rgba(26, 50, 99, 0.4);
 }
 
 .test-button.success {
-  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+  background: linear-gradient(135deg, #fab95b 0%, #e5a84d 100%);
+  color: #1a3263;
+  box-shadow: 0 4px 15px rgba(250, 185, 91, 0.3);
 }
 
 .test-button.success:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+  box-shadow: 0 6px 20px rgba(250, 185, 91, 0.4);
 }
 
 .test-button.error {
@@ -86,14 +86,14 @@
 }
 
 .test-button.secondary {
-  background: linear-gradient(135deg, #607d8b 0%, #546e7a 100%);
+  background: linear-gradient(135deg, #547792 0%, #1a3263 100%);
   color: white;
-  box-shadow: 0 4px 15px rgba(96, 125, 139, 0.3);
+  box-shadow: 0 4px 15px rgba(84, 119, 146, 0.3);
 }
 
 .test-button.secondary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(96, 125, 139, 0.4);
+  box-shadow: 0 6px 20px rgba(84, 119, 146, 0.4);
 }
 
 .error-message {
@@ -112,7 +112,7 @@
 }
 
 .examples-section h3 {
-  color: #333;
+  color: #1a3263;
   font-size: 2rem;
   margin-bottom: 30px;
   text-align: center;
@@ -135,9 +135,9 @@
 }
 
 .success-header {
-  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c8 100%);
-  color: #2e7d32;
-  border-left: 4px solid #4caf50;
+  background: linear-gradient(135deg, #e8e2db 0%, #d4cfc5 100%);
+  color: #1a3263;
+  border-left: 4px solid #fab95b;
 }
 
 .error-header {

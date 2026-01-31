@@ -10,14 +10,14 @@
 }
 
 .config-header h2 {
-  color: #333;
+  color: #1a3263;
   font-size: 2.5rem;
   margin-bottom: 15px;
   font-weight: 600;
 }
 
 .config-header p {
-  color: #666;
+  color: #547792;
   font-size: 1.2rem;
   margin: 0;
 }
@@ -31,7 +31,7 @@
 }
 
 .config-panel h3 {
-  color: #4a90e2;
+  color: #1a3263;
   font-size: 1.5rem;
   margin-bottom: 30px;
   font-weight: 600;
@@ -69,7 +69,7 @@
 
 .layer-item input[type="number"]:focus {
   outline: none;
-  border-color: #4a90e2;
+  border-color: #547792;
 }
 
 .checkbox-label {
@@ -120,18 +120,18 @@
 }
 
 .layer-block.input {
-  background: #e3f2fd;
-  border-left: 4px solid #2196f3;
+  background: #e8e2db;
+  border-left: 4px solid #547792;
 }
 
 .layer-block.hidden {
-  background: #e8f5e8;
-  border-left: 4px solid #4caf50;
+  background: #e8e2db;
+  border-left: 4px solid #1a3263;
 }
 
 .layer-block.output {
-  background: #fff3e0;
-  border-left: 4px solid #ff9800;
+  background: #e8e2db;
+  border-left: 4px solid #fab95b;
 }
 
 .layer-label {
@@ -158,7 +158,7 @@
 }
 
 .create-network-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1a3263 0%, #547792 100%);
   color: white;
   border: none;
   padding: 15px 30px;
@@ -167,12 +167,12 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 15px rgba(26, 50, 99, 0.3);
 }
 
 .create-network-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 20px rgba(26, 50, 99, 0.4);
 }
 
 .create-network-button:disabled {

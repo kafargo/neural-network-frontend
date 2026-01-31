@@ -18,7 +18,8 @@
 }
 
 .card-header.success {
-  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  background: linear-gradient(135deg, #fab95b 0%, #e5a84d 100%);
+  color: #1a3263;
 }
 
 .card-header.error {
@@ -101,19 +102,19 @@
 }
 
 .value.actual {
-  color: #4caf50;
+  color: #1a3263;
 }
 
 .value.predicted.correct {
-  color: #4caf50;
+  color: #1a3263;
 }
 
 .value.predicted.incorrect {
-  color: #f44336;
+  color: #c62828;
 }
 
 .value.confidence {
-  color: #2196f3;
+  color: #547792;
 }
 
 .status-indicator {
@@ -129,8 +130,8 @@
 }
 
 .status.success {
-  background-color: #e8f5e8;
-  color: #2e7d32;
+  background-color: #e8e2db;
+  color: #1a3263;
 }
 
 .status.failure {
@@ -178,18 +179,18 @@
 }
 
 .confidence-bar.predicted {
-  background-color: #e3f2fd;
-  border-left: 4px solid #2196f3;
+  background-color: #e8e2db;
+  border-left: 4px solid #547792;
 }
 
 .confidence-bar.actual {
-  background-color: #e8f5e8;
-  border-left: 4px solid #4caf50;
+  background-color: #e8e2db;
+  border-left: 4px solid #1a3263;
 }
 
 .confidence-bar.predicted.actual {
-  background-color: #fff3e0;
-  border-left: 4px solid #ff9800;
+  background-color: #e8e2db;
+  border-left: 4px solid #fab95b;
 }
 
 .digit-label {
