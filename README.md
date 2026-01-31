@@ -1,4 +1,4 @@
-# Neural Network Angular Demo
+# Neural Network Angular Frontend
 
 An interactive web application for learning and experimenting with neural networks, built with Angular and featuring real-time training visualization, MNIST digit recognition, and hands-on neural network configuration.
 
