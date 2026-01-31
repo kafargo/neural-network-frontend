@@ -33,7 +33,10 @@ module.exports = function (config) {
       },
     ],
     coverageReporter: {
-      dir: require("path").join(__dirname, "./coverage/neural-angular-demo"),
+      dir: require("path").join(
+        __dirname,
+        "./coverage/neural-network-frontend",
+      ),
       subdir: ".",
       reporters: [{ type: "html" }, { type: "text-summary" }],
     },

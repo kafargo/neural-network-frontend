@@ -37,13 +37,13 @@ The application demonstrates key concepts including:
 
    ```bash
    git clone <repository-url>
-   cd neural-angular-demo
+   cd neural-network-frontend
    ```
 
 2. **Install dependencies**
 
    ```bash
-   cd neural-angular-demo
+   cd neural-network-frontend
    npm install
    ```
 
@@ -99,36 +99,30 @@ The backend **must** implement these endpoints:
 **REST API Endpoints:**
 
 1. **POST** `/api/networks`
-
    - Create a new neural network
    - Body: `{ layer_sizes: number[] }`
    - Returns: Network ID and metadata
 
 2. **POST** `/api/networks/{networkId}/train`
-
    - Start training a network
    - Body: `{ epochs: number, mini_batch_size: number, learning_rate: number }`
    - Returns: Training job ID
 
 3. **GET** `/api/networks/{networkId}/successful_example`
-
    - Get a successfully classified MNIST example
    - Returns: Example image data and prediction
 
 4. **GET** `/api/networks/{networkId}/unsuccessful_example`
-
    - Get a misclassified MNIST example
    - Returns: Example image data and prediction
 
 **WebSocket Events (Socket.IO):**
 
 5. **`training_update`** event
-
    - Real-time training progress updates (per epoch)
    - Payload: `{ job_id, network_id, epoch, total_epochs, accuracy, progress, elapsed_time }`
 
 6. **`training_complete`** event ✨ **Required**
-
    - Signals actual training completion (after all epochs and final evaluation)
    - Payload: `{ job_id, network_id, status, accuracy, message }`
    - **Critical**: Frontend waits for this event before marking training as complete
@@ -143,8 +137,8 @@ The backend **must** implement these endpoints:
 
 Configure the API URLs in the environment files:
 
-- Development: [`neural-angular-demo/src/environments/environment.ts`](neural-angular-demo/src/environments/environment.ts)
-- Production: [`neural-angular-demo/src/environments/environment.prod.ts`](neural-angular-demo/src/environments/environment.prod.ts)
+- Development: [`neural-network-frontend/src/environments/environment.ts`](neural-network-frontend/src/environments/environment.ts)
+- Production: [`neural-network-frontend/src/environments/environment.prod.ts`](neural-network-frontend/src/environments/environment.prod.ts)
 
 ## 🏗️ Architecture
 
@@ -167,8 +161,8 @@ The application connects to a backend API for neural network operations:
 ### Project Structure
 
 ```
-neural-angular-demo/           # Root workspace
-├── neural-angular-demo/       # Angular application
+neural-network-frontend/           # Root workspace
+├── neural-network-frontend/       # Angular application
 │   ├── src/
 │   │   ├── app/
 │   │   │   ├── components/           # UI components
@@ -308,7 +302,7 @@ This project is open source and available under the [MIT License](LICENSE).
 If you have questions, suggestions, or run into issues:
 
 1. Review the environment configuration files for API connection settings
-2. Check the [Angular project README](neural-angular-demo/README.md) for Angular-specific documentation
+2. Check the [Angular project README](neural-network-frontend/README.md) for Angular-specific documentation
 3. Ensure the backend API server is running and accessible
 4. Open an issue on GitHub for bugs or feature requests
 

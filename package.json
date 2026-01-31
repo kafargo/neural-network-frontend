@@ -1,10 +1,10 @@
 {
-  "name": "neural-angular-demo-root",
+  "name": "neural-network-frontend-root",
   "version": "1.0.0",
   "description": "Neural Network Angular Demo - Railway Deployment Root",
   "scripts": {
-    "build": "cd neural-angular-demo && npm ci && npm run build:prod",
-    "postbuild": "echo 'Build completed' && ls -la neural-angular-demo/dist/",
+    "build": "cd neural-network-frontend && npm ci && npm run build:prod",
+    "postbuild": "echo 'Build completed' && ls -la neural-network-frontend/dist/",
     "start": "cd neural-angular-demo && node server.js",
     "prestart": "echo 'Starting app...' && echo 'PORT:' $PORT && echo 'NODE_ENV:' $NODE_ENV",
     "install-deps": "cd neural-angular-demo && npm ci"
