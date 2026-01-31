@@ -1,35 +1,13 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { LoggerService } from '../logger.service';
+// Import shared interfaces from central location - avoid duplication
+import { TrainingUpdate, TrainingComplete, TrainingError } from '../../interfaces/neural-network.interface';
 
-export interface TrainingUpdate {
-  job_id: string;
-  network_id: string;
-  epoch: number;
-  total_epochs: number;
-  accuracy: number | null;
-  elapsed_time: number;
-  progress: number;
-  correct?: number;
-  total?: number;
-}
-
-export interface TrainingComplete {
-  job_id: string;
-  network_id: string;
-  status: string;
-  accuracy: number;
-  message: string;
-}
-
-export interface TrainingError {
-  job_id: string;
-  network_id: string;
-  status: string;
-  error: string;
-}
+// Re-export for backward compatibility (using 'export type' for isolatedModules)
+export type { TrainingUpdate, TrainingComplete, TrainingError };
 
 export interface ConnectionStatus {
   connected: boolean;
@@ -41,17 +19,20 @@ export interface ConnectionStatus {
 })
 export class TrainingWebSocketService implements OnDestroy {
   private socket!: Socket; // Non-null assertion as it will be initialized in initializeConnection
-  private connectionStatus = new BehaviorSubject<ConnectionStatus>({
+  private readonly connectionStatus = new BehaviorSubject<ConnectionStatus>({
     connected: false
   });
-  private trainingUpdates = new BehaviorSubject<TrainingUpdate | null>(null);
-  private trainingComplete = new BehaviorSubject<TrainingComplete | null>(null);
-  private trainingError = new BehaviorSubject<TrainingError | null>(null);
+  private readonly trainingUpdates = new BehaviorSubject<TrainingUpdate | null>(null);
+  private readonly trainingComplete = new BehaviorSubject<TrainingComplete | null>(null);
+  private readonly trainingError = new BehaviorSubject<TrainingError | null>(null);
   
   // Production server URL based on the documentation
-  private serverUrl = environment.websocketUrl;
+  private readonly serverUrl = environment.websocketUrl;
+  
+  // Modern Angular: use inject() function
+  private readonly logger = inject(LoggerService);
 
-  constructor(private logger: LoggerService) {
+  constructor() {
     this.initializeConnection();
   }
 

@@ -46,7 +46,7 @@ export interface TrainingConfig {
   learningRate: number;
 }
 
-export type AppSection = 'learn' | 'create' | 'train' | 'test';
+export type AppSection = 'about' | 'create' | 'train' | 'test';
 
 // API Response Interfaces
 export interface ApiStatus {

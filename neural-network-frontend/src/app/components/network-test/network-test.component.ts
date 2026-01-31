@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { NeuralNetworkService } from '../../services/neural-network.service';
@@ -15,7 +15,12 @@ import { NetworkExample } from '../../interfaces/neural-network.interface';
   styleUrls: ['./network-test.component.css']
 })
 export class NetworkTestComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
+  
+  // Modern Angular: use inject() function
+  private readonly neuralNetworkService = inject(NeuralNetworkService);
+  private readonly appState = inject(AppStateService);
+  private readonly logger = inject(LoggerService);
   
   networkId = '';
 
@@ -26,15 +31,9 @@ export class NetworkTestComponent implements OnInit, OnDestroy {
   showExamples = false;
   error: string | null = null;
 
-  constructor(
-    private neuralNetworkService: NeuralNetworkService,
-    private appState: AppStateService,
-    private logger: LoggerService
-  ) {}
-
   ngOnInit(): void {
-    // Load network ID from the state service
-    this.networkId = this.appState.networkId;
+    // Load network ID from the state service (signal)
+    this.networkId = this.appState.networkId();
   }
 
   ngOnDestroy(): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 import { NeuralNetworkService } from './services/neural-network.service';
@@ -25,11 +25,12 @@ export class AppComponent implements OnInit {
   title = 'Neural Network Demo';
   private readonly NAVIGATION_FLAG = 'app_navigation_active';
 
-  constructor(
-    private router: Router,
-    private neuralNetworkService: NeuralNetworkService,
-    public appState: AppStateService
-  ) {
+  // Modern Angular: use inject() function instead of constructor injection
+  private readonly router = inject(Router);
+  private readonly neuralNetworkService = inject(NeuralNetworkService);
+  readonly appState = inject(AppStateService);
+
+  constructor() {
     // Only set up beforeunload listener in non-test environments
     // Check if we're running in a test environment (Karma/Jasmine)
     if (typeof (window as any).__karma__ === 'undefined' && typeof (window as any).jasmine === 'undefined') {
@@ -47,7 +48,7 @@ export class AppComponent implements OnInit {
     if (!isNavigation) {
       // This is a page refresh - clear all state and redirect to landing page
       this.appState.clearAllState();
-      this.router.navigate(['/learn']);
+      this.router.navigate(['/about']);
     }
     
     // Set flag for subsequent navigations

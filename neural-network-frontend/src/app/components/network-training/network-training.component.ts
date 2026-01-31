@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -18,8 +18,15 @@ import { TrainingConfig, TrainingUpdate } from '../../interfaces/neural-network.
   styleUrls: ['./network-training.component.css']
 })
 export class NetworkTrainingComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
   private currentJobId: string | null = null;
+  
+  // Modern Angular: use inject() function
+  private readonly router = inject(Router);
+  private readonly neuralNetworkService = inject(NeuralNetworkService);
+  private readonly appState = inject(AppStateService);
+  private readonly logger = inject(LoggerService);
+  private readonly websocketService = inject(TrainingWebSocketService);
   
   networkId = '';
   trainingConfig: TrainingConfig = {
@@ -36,19 +43,11 @@ export class NetworkTrainingComponent implements OnInit, OnDestroy {
   currentTraining: TrainingUpdate | null = null;
   error: string | null = null;
 
-  constructor(
-    private router: Router,
-    private neuralNetworkService: NeuralNetworkService,
-    private appState: AppStateService,
-    private logger: LoggerService,
-    private websocketService: TrainingWebSocketService
-  ) {}
-
   ngOnInit(): void {
-    // Load state from the service
-    this.networkId = this.appState.networkId;
-    this.trainingConfig = { ...this.appState.trainingConfig };
-    this.finalAccuracy = this.appState.finalAccuracy;
+    // Load state from the service (signals)
+    this.networkId = this.appState.networkId();
+    this.trainingConfig = { ...this.appState.trainingConfig() };
+    this.finalAccuracy = this.appState.finalAccuracy();
 
     // Subscribe to training updates
     this.websocketService.getTrainingUpdates()

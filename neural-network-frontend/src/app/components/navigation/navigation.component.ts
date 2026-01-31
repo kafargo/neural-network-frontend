@@ -10,7 +10,7 @@ import { AppSection } from '../../interfaces/neural-network.interface';
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent {
-  @Input() activeSection: AppSection = 'learn';
+  @Input() activeSection: AppSection = 'about';
   @Input() networkId: string = '';
   @Input() trainingComplete: boolean = false;
   
@@ -24,7 +24,7 @@ export class NavigationComponent {
 
   canNavigateToSection(section: AppSection): boolean {
     switch (section) {
-      case 'learn':
+      case 'about':
         return true;
       case 'create':
         return true;

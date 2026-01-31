@@ -6,12 +6,16 @@ import { AppStateService } from '../../services/app-state.service';
 describe('LearnComponent', () => {
   let component: LearnComponent;
   let fixture: ComponentFixture<LearnComponent>;
-  let routerSpy: jasmine.SpyObj<Router>;
-  let appStateSpy: jasmine.SpyObj<AppStateService>;
+  let routerSpy: jest.Mocked<Partial<Router>>;
+  let appStateSpy: jest.Mocked<Partial<AppStateService>>;
 
   beforeEach(async () => {
-    const routerSpyObj = jasmine.createSpyObj('Router', ['navigate']);
-    const appStateSpyObj = jasmine.createSpyObj('AppStateService', ['setActiveSection']);
+    const routerSpyObj = {
+      navigate: jest.fn()
+    };
+    const appStateSpyObj = {
+      setActiveSection: jest.fn()
+    };
 
     await TestBed.configureTestingModule({
       imports: [LearnComponent],
@@ -21,8 +25,8 @@ describe('LearnComponent', () => {
       ]
     }).compileComponents();
 
-    routerSpy = TestBed.inject(Router) as jasmine.SpyObj<Router>;
-    appStateSpy = TestBed.inject(AppStateService) as jasmine.SpyObj<AppStateService>;
+    routerSpy = TestBed.inject(Router) as jest.Mocked<Partial<Router>>;
+    appStateSpy = TestBed.inject(AppStateService) as jest.Mocked<Partial<AppStateService>>;
     fixture = TestBed.createComponent(LearnComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

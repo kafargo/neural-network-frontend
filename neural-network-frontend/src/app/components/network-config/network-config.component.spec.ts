@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
+import { signal } from '@angular/core';
 
 import { NetworkConfigComponent } from './network-config.component';
 import { NeuralNetworkService } from '../../services/neural-network.service';
@@ -13,20 +14,27 @@ import { NetworkCreateResponse } from '../../interfaces/neural-network.interface
 describe('NetworkConfigComponent', () => {
   let component: NetworkConfigComponent;
   let fixture: ComponentFixture<NetworkConfigComponent>;
-  let neuralNetworkServiceSpy: jasmine.SpyObj<NeuralNetworkService>;
-  let routerSpy: jasmine.SpyObj<Router>;
-  let appStateSpy: jasmine.SpyObj<AppStateService>;
-  let loggerSpy: jasmine.SpyObj<LoggerService>;
+  let neuralNetworkServiceSpy: jest.Mocked<Partial<NeuralNetworkService>>;
+  let routerSpy: jest.Mocked<Partial<Router>>;
+  let appStateSpy: Partial<AppStateService>;
+  let loggerSpy: jest.Mocked<Partial<LoggerService>>;
 
   beforeEach(async () => {
-    const networkSpy = jasmine.createSpyObj('NeuralNetworkService', ['createNetwork']);
-    const routerSpyObj = jasmine.createSpyObj('Router', ['navigate']);
-    const appStateSpyObj = jasmine.createSpyObj('AppStateService', ['setNetworkId', 'setActiveSection', 'setNetworkConfig', 'networkConfig']);
-    const loggerSpyObj = jasmine.createSpyObj('LoggerService', ['error']);
-    
-    Object.defineProperty(appStateSpyObj, 'networkConfig', {
-      get: () => ({ hiddenLayer1: 128, hiddenLayer2: 64, useSecondLayer: true, layerSizes: [784, 128, 64, 10] })
-    });
+    const networkSpy = {
+      createNetwork: jest.fn()
+    };
+    const routerSpyObj = {
+      navigate: jest.fn()
+    };
+    const appStateSpyObj = {
+      setNetworkId: jest.fn(),
+      setActiveSection: jest.fn(),
+      setNetworkConfig: jest.fn(),
+      networkConfig: signal({ hiddenLayer1: 128, hiddenLayer2: 64, useSecondLayer: true, layerSizes: [784, 128, 64, 10] })
+    };
+    const loggerSpyObj = {
+      error: jest.fn()
+    };
     
     await TestBed.configureTestingModule({
       imports: [NetworkConfigComponent, FormsModule, HttpClientTestingModule],
@@ -38,10 +46,10 @@ describe('NetworkConfigComponent', () => {
       ]
     }).compileComponents();
 
-    neuralNetworkServiceSpy = TestBed.inject(NeuralNetworkService) as jasmine.SpyObj<NeuralNetworkService>;
-    routerSpy = TestBed.inject(Router) as jasmine.SpyObj<Router>;
-    appStateSpy = TestBed.inject(AppStateService) as jasmine.SpyObj<AppStateService>;
-    loggerSpy = TestBed.inject(LoggerService) as jasmine.SpyObj<LoggerService>;
+    neuralNetworkServiceSpy = TestBed.inject(NeuralNetworkService) as jest.Mocked<Partial<NeuralNetworkService>>;
+    routerSpy = TestBed.inject(Router) as jest.Mocked<Partial<Router>>;
+    appStateSpy = TestBed.inject(AppStateService) as Partial<AppStateService>;
+    loggerSpy = TestBed.inject(LoggerService) as jest.Mocked<Partial<LoggerService>>;
     fixture = TestBed.createComponent(NetworkConfigComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -73,7 +81,7 @@ describe('NetworkConfigComponent', () => {
       layer_sizes: [784, 128, 64, 10],
       message: 'Network created successfully'
     };
-    neuralNetworkServiceSpy.createNetwork.and.returnValue(of(mockResponse));
+    (neuralNetworkServiceSpy.createNetwork as jest.Mock).mockReturnValue(of(mockResponse));
     
     component.createNetwork();
     
@@ -85,7 +93,7 @@ describe('NetworkConfigComponent', () => {
   });
 
   it('should handle network creation error', () => {
-    neuralNetworkServiceSpy.createNetwork.and.returnValue(throwError(() => new Error('API Error')));
+    (neuralNetworkServiceSpy.createNetwork as jest.Mock).mockReturnValue(throwError(() => new Error('API Error')));
     
     component.createNetwork();
     

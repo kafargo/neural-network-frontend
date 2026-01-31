@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
+import { signal } from '@angular/core';
 
 import { NetworkTrainingComponent } from './network-training.component';
 import { NeuralNetworkService } from '../../services/neural-network.service';
@@ -13,33 +14,39 @@ import { TrainingWebSocketService } from '../../services/websocket/training-webs
 describe('NetworkTrainingComponent', () => {
   let component: NetworkTrainingComponent;
   let fixture: ComponentFixture<NetworkTrainingComponent>;
-  let neuralNetworkServiceSpy: jasmine.SpyObj<NeuralNetworkService>;
-  let routerSpy: jasmine.SpyObj<Router>;
-  let appStateSpy: jasmine.SpyObj<AppStateService>;
-  let loggerSpy: jasmine.SpyObj<LoggerService>;
-  let websocketSpy: jasmine.SpyObj<TrainingWebSocketService>;
+  let neuralNetworkServiceSpy: jest.Mocked<Partial<NeuralNetworkService>>;
+  let routerSpy: jest.Mocked<Partial<Router>>;
+  let appStateSpy: Partial<AppStateService>;
+  let loggerSpy: jest.Mocked<Partial<LoggerService>>;
+  let websocketSpy: jest.Mocked<Partial<TrainingWebSocketService>>;
 
   beforeEach(async () => {
-    const networkSpy = jasmine.createSpyObj('NeuralNetworkService', ['trainNetwork']);
-    const routerSpyObj = jasmine.createSpyObj('Router', ['navigate']);
-    const appStateSpyObj = jasmine.createSpyObj('AppStateService', ['setTrainingConfig', 'setTrainingComplete', 'setActiveSection', 'setFinalAccuracy', 'networkId', 'trainingConfig', 'finalAccuracy']);
-    const loggerSpyObj = jasmine.createSpyObj('LoggerService', ['error', 'log']);
-    const websocketSpyObj = jasmine.createSpyObj('TrainingWebSocketService', ['connect', 'disconnect', 'getTrainingUpdates', 'getTrainingComplete', 'getTrainingError']);
-    
-    // Mock observables for websocket
-    websocketSpyObj.getTrainingUpdates.and.returnValue(of());
-    websocketSpyObj.getTrainingComplete.and.returnValue(of());
-    websocketSpyObj.getTrainingError.and.returnValue(of());
-    
-    Object.defineProperty(appStateSpyObj, 'networkId', {
-      get: () => 'test-network-id'
-    });
-    Object.defineProperty(appStateSpyObj, 'trainingConfig', {
-      get: () => ({ epochs: 10, miniBatchSize: 10, learningRate: 3.0 })
-    });
-    Object.defineProperty(appStateSpyObj, 'finalAccuracy', {
-      get: () => null
-    });
+    const networkSpy = {
+      trainNetwork: jest.fn()
+    };
+    const routerSpyObj = {
+      navigate: jest.fn()
+    };
+    const appStateSpyObj = {
+      setTrainingConfig: jest.fn(),
+      setTrainingComplete: jest.fn(),
+      setActiveSection: jest.fn(),
+      setFinalAccuracy: jest.fn(),
+      networkId: signal('test-network-id'),
+      trainingConfig: signal({ epochs: 10, miniBatchSize: 10, learningRate: 3.0 }),
+      finalAccuracy: signal(null)
+    };
+    const loggerSpyObj = {
+      error: jest.fn(),
+      log: jest.fn()
+    };
+    const websocketSpyObj = {
+      connect: jest.fn(),
+      disconnect: jest.fn(),
+      getTrainingUpdates: jest.fn().mockReturnValue(of()),
+      getTrainingComplete: jest.fn().mockReturnValue(of()),
+      getTrainingError: jest.fn().mockReturnValue(of())
+    };
     
     await TestBed.configureTestingModule({
       imports: [NetworkTrainingComponent, FormsModule, HttpClientTestingModule],
@@ -52,11 +59,11 @@ describe('NetworkTrainingComponent', () => {
       ]
     }).compileComponents();
 
-    neuralNetworkServiceSpy = TestBed.inject(NeuralNetworkService) as jasmine.SpyObj<NeuralNetworkService>;
-    routerSpy = TestBed.inject(Router) as jasmine.SpyObj<Router>;
-    appStateSpy = TestBed.inject(AppStateService) as jasmine.SpyObj<AppStateService>;
-    loggerSpy = TestBed.inject(LoggerService) as jasmine.SpyObj<LoggerService>;
-    websocketSpy = TestBed.inject(TrainingWebSocketService) as jasmine.SpyObj<TrainingWebSocketService>;
+    neuralNetworkServiceSpy = TestBed.inject(NeuralNetworkService) as jest.Mocked<Partial<NeuralNetworkService>>;
+    routerSpy = TestBed.inject(Router) as jest.Mocked<Partial<Router>>;
+    appStateSpy = TestBed.inject(AppStateService) as Partial<AppStateService>;
+    loggerSpy = TestBed.inject(LoggerService) as jest.Mocked<Partial<LoggerService>>;
+    websocketSpy = TestBed.inject(TrainingWebSocketService) as jest.Mocked<Partial<TrainingWebSocketService>>;
     fixture = TestBed.createComponent(NetworkTrainingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -80,7 +87,7 @@ describe('NetworkTrainingComponent', () => {
 
   it('should start training successfully', () => {
     const mockResponse = { job_id: 'test-job-id', network_id: 'test-network-id', message: 'Training started' };
-    neuralNetworkServiceSpy.trainNetwork.and.returnValue(of(mockResponse));
+    (neuralNetworkServiceSpy.trainNetwork as jest.Mock).mockReturnValue(of(mockResponse));
     
     component.startTraining();
     
@@ -90,7 +97,7 @@ describe('NetworkTrainingComponent', () => {
   });
 
   it('should handle training start error', () => {
-    neuralNetworkServiceSpy.trainNetwork.and.returnValue(throwError(() => new Error('API Error')));
+    (neuralNetworkServiceSpy.trainNetwork as jest.Mock).mockReturnValue(throwError(() => new Error('API Error')));
     
     component.startTraining();
     
@@ -99,12 +106,8 @@ describe('NetworkTrainingComponent', () => {
   });
 
   it('should not start training without network ID', () => {
-    // Override the networkId getter for this test
-    Object.defineProperty(appStateSpy, 'networkId', {
-      get: () => '',
-      configurable: true
-    });
-    component.ngOnInit();
+    // Set empty networkId for this test
+    component.networkId = '';
     
     component.startTraining();
     

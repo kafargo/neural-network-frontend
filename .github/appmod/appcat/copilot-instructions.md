@@ -114,3 +114,4 @@ Instructions for generating high-quality Angular applications with TypeScript, u
 - Use Angular's built-in i18n for internationalization (if specified)
 - Keep code DRY by creating reusable utilities and shared modules
 - Use signals consistently for state management to ensure reactive updates
+- Always run the tests after making changes to ensure stability

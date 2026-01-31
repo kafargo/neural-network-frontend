@@ -1,102 +1,72 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, signal, computed } from '@angular/core';
 import { AppSection, NetworkConfig, TrainingConfig } from '../interfaces/neural-network.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppStateService {
-  // State subjects
-  private activeSectionSubject = new BehaviorSubject<AppSection>('learn');
-  private networkIdSubject = new BehaviorSubject<string>('');
-  private networkConfigSubject = new BehaviorSubject<NetworkConfig>({
+  // Modern Angular signals for state management
+  readonly activeSection = signal<AppSection>('about');
+  readonly networkId = signal<string>('');
+  readonly networkConfig = signal<NetworkConfig>({
     hiddenLayer1: 128,
     hiddenLayer2: 64,
     useSecondLayer: true,
     layerSizes: [784, 128, 64, 10]
   });
-  private trainingConfigSubject = new BehaviorSubject<TrainingConfig>({
+  readonly trainingConfig = signal<TrainingConfig>({
     epochs: 10,
     miniBatchSize: 10,
     learningRate: 3.0
   });
-  private trainingCompleteSubject = new BehaviorSubject<boolean>(false);
-  private finalAccuracySubject = new BehaviorSubject<number | null>(null);
+  readonly trainingComplete = signal<boolean>(false);
+  readonly finalAccuracy = signal<number | null>(null);
 
-  // Public observables
-  activeSection$ = this.activeSectionSubject.asObservable();
-  networkId$ = this.networkIdSubject.asObservable();
-  networkConfig$ = this.networkConfigSubject.asObservable();
-  trainingConfig$ = this.trainingConfigSubject.asObservable();
-  trainingComplete$ = this.trainingCompleteSubject.asObservable();
-  finalAccuracy$ = this.finalAccuracySubject.asObservable();
+  // Computed signals (example: check if network is ready for training)
+  readonly isNetworkReady = computed(() => this.networkId().length > 0);
+  readonly isTrainingReady = computed(() => this.isNetworkReady() && !this.trainingComplete());
 
-  // Getters for current values
-  get activeSection(): AppSection {
-    return this.activeSectionSubject.value;
-  }
-
-  get networkId(): string {
-    return this.networkIdSubject.value;
-  }
-
-  get networkConfig(): NetworkConfig {
-    return this.networkConfigSubject.value;
-  }
-
-  get trainingConfig(): TrainingConfig {
-    return this.trainingConfigSubject.value;
-  }
-
-  get trainingComplete(): boolean {
-    return this.trainingCompleteSubject.value;
-  }
-
-  get finalAccuracy(): number | null {
-    return this.finalAccuracySubject.value;
-  }
-
-  // Setters
+  // Setters using signal.set()
   setActiveSection(section: AppSection): void {
-    this.activeSectionSubject.next(section);
+    this.activeSection.set(section);
   }
 
   setNetworkId(id: string): void {
-    this.networkIdSubject.next(id);
+    this.networkId.set(id);
   }
 
   setNetworkConfig(config: NetworkConfig): void {
-    this.networkConfigSubject.next(config);
+    this.networkConfig.set(config);
   }
 
   setTrainingConfig(config: TrainingConfig): void {
-    this.trainingConfigSubject.next(config);
+    this.trainingConfig.set(config);
   }
 
   setTrainingComplete(complete: boolean): void {
-    this.trainingCompleteSubject.next(complete);
+    this.trainingComplete.set(complete);
   }
 
   setFinalAccuracy(accuracy: number | null): void {
-    this.finalAccuracySubject.next(accuracy);
+    this.finalAccuracy.set(accuracy);
   }
 
   // Clear all state - useful for page refresh or reset
   clearAllState(): void {
-    this.activeSectionSubject.next('learn');
-    this.networkIdSubject.next('');
-    this.networkConfigSubject.next({
+    this.activeSection.set('about');
+    this.networkId.set('');
+    this.networkConfig.set({
       hiddenLayer1: 128,
       hiddenLayer2: 64,
       useSecondLayer: true,
       layerSizes: [784, 128, 64, 10]
     });
-    this.trainingConfigSubject.next({
+    this.trainingConfig.set({
       epochs: 10,
       miniBatchSize: 10,
       learningRate: 3.0
     });
-    this.trainingCompleteSubject.next(false);
-    this.finalAccuracySubject.next(null);
+    this.trainingComplete.set(false);
+    this.finalAccuracy.set(null);
   }
 }

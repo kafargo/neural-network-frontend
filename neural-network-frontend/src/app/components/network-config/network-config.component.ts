@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -16,7 +16,13 @@ import { NetworkConfig } from '../../interfaces/neural-network.interface';
   styleUrls: ['./network-config.component.css']
 })
 export class NetworkConfigComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
+  
+  // Modern Angular: use inject() function
+  private readonly router = inject(Router);
+  private readonly neuralNetworkService = inject(NeuralNetworkService);
+  private readonly appState = inject(AppStateService);
+  private readonly logger = inject(LoggerService);
   
   config: NetworkConfig = {
     hiddenLayer1: 128,
@@ -28,16 +34,9 @@ export class NetworkConfigComponent implements OnInit, OnDestroy {
   loading = false;
   error: string | null = null;
 
-  constructor(
-    private router: Router,
-    private neuralNetworkService: NeuralNetworkService,
-    private appState: AppStateService,
-    private logger: LoggerService
-  ) {}
-
   ngOnInit(): void {
-    // Load the current config from the state service
-    this.config = { ...this.appState.networkConfig };
+    // Load the current config from the state service (signal)
+    this.config = { ...this.appState.networkConfig() };
   }
 
   ngOnDestroy(): void {

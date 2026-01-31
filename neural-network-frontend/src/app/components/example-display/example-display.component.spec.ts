@@ -66,7 +66,7 @@ describe('ExampleDisplayComponent', () => {
 
   it('should handle image error', () => {
     const mockEvent = { target: { src: 'test-src' } };
-    spyOn(console, 'error');
+    jest.spyOn(console, 'error').mockImplementation(() => {});
     
     component.handleImageError(mockEvent);
     

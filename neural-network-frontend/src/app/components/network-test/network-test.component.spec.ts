@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
+import { signal } from '@angular/core';
 
 import { NetworkTestComponent } from './network-test.component';
 import { NeuralNetworkService } from '../../services/neural-network.service';
@@ -11,18 +12,23 @@ import { NetworkExample } from '../../interfaces/neural-network.interface';
 describe('NetworkTestComponent', () => {
   let component: NetworkTestComponent;
   let fixture: ComponentFixture<NetworkTestComponent>;
-  let neuralNetworkServiceSpy: jasmine.SpyObj<NeuralNetworkService>;
-  let appStateSpy: jasmine.SpyObj<AppStateService>;
-  let loggerSpy: jasmine.SpyObj<LoggerService>;
+  let neuralNetworkServiceSpy: jest.Mocked<Partial<NeuralNetworkService>>;
+  let appStateSpy: Partial<AppStateService>;
+  let loggerSpy: jest.Mocked<Partial<LoggerService>>;
 
   beforeEach(async () => {
-    const networkSpy = jasmine.createSpyObj('NeuralNetworkService', ['getExamples']);
-    const appStateSpyObj = jasmine.createSpyObj('AppStateService', ['networkId']);
-    const loggerSpyObj = jasmine.createSpyObj('LoggerService', ['error', 'log']);
+    const networkSpy = {
+      getExamples: jest.fn()
+    };
+    const loggerSpyObj = {
+      error: jest.fn(),
+      log: jest.fn()
+    };
     
-    Object.defineProperty(appStateSpyObj, 'networkId', {
-      get: () => 'test-network-id'
-    });
+    // Create a plain object for AppStateService since we only need signals, not spy methods
+    const appStateSpyObj = {
+      networkId: signal('test-network-id')
+    };
     
     await TestBed.configureTestingModule({
       imports: [NetworkTestComponent, HttpClientTestingModule],
@@ -33,9 +39,9 @@ describe('NetworkTestComponent', () => {
       ]
     }).compileComponents();
 
-    neuralNetworkServiceSpy = TestBed.inject(NeuralNetworkService) as jasmine.SpyObj<NeuralNetworkService>;
-    appStateSpy = TestBed.inject(AppStateService) as jasmine.SpyObj<AppStateService>;
-    loggerSpy = TestBed.inject(LoggerService) as jasmine.SpyObj<LoggerService>;
+    neuralNetworkServiceSpy = TestBed.inject(NeuralNetworkService) as jest.Mocked<Partial<NeuralNetworkService>>;
+    appStateSpy = TestBed.inject(AppStateService) as Partial<AppStateService>;
+    loggerSpy = TestBed.inject(LoggerService) as jest.Mocked<Partial<LoggerService>>;
     fixture = TestBed.createComponent(NetworkTestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -54,12 +60,12 @@ describe('NetworkTestComponent', () => {
       network_output: [0.1, 0.2, 0.8, 0.3, 0.1, 0.0, 0.0, 0.9, 0.2, 0.1]
     };
     
-    neuralNetworkServiceSpy.getExamples.and.returnValue(of(mockExample));
+    (neuralNetworkServiceSpy.getExamples as jest.Mock).mockReturnValue(of(mockExample));
     
     component.loadSuccessfulExample();
     tick();
     
-    expect(component.currentExample).toEqual(jasmine.objectContaining({
+    expect(component.currentExample).toEqual(expect.objectContaining({
       actual_digit: 7,
       predicted_digit: 7,
       correct: true
@@ -76,12 +82,12 @@ describe('NetworkTestComponent', () => {
       network_output: [0.1, 0.2, 0.8, 0.3, 0.9, 0.0, 0.0, 0.3, 0.2, 0.1]
     };
     
-    neuralNetworkServiceSpy.getExamples.and.returnValue(of(mockExample));
+    (neuralNetworkServiceSpy.getExamples as jest.Mock).mockReturnValue(of(mockExample));
     
     component.loadUnsuccessfulExample();
     tick();
     
-    expect(component.currentExample).toEqual(jasmine.objectContaining({
+    expect(component.currentExample).toEqual(expect.objectContaining({
       actual_digit: 7,
       predicted_digit: 4,
       correct: false
@@ -90,7 +96,7 @@ describe('NetworkTestComponent', () => {
   }));
 
   it('should handle successful example loading error with fallback', fakeAsync(() => {
-    neuralNetworkServiceSpy.getExamples.and.returnValue(throwError(() => new Error('API Error')));
+    (neuralNetworkServiceSpy.getExamples as jest.Mock).mockReturnValue(throwError(() => new Error('API Error')));
     
     component.loadSuccessfulExample();
     tick();
@@ -101,7 +107,7 @@ describe('NetworkTestComponent', () => {
   }));
 
   it('should handle unsuccessful example loading error with fallback', fakeAsync(() => {
-    neuralNetworkServiceSpy.getExamples.and.returnValue(throwError(() => new Error('API Error')));
+    (neuralNetworkServiceSpy.getExamples as jest.Mock).mockReturnValue(throwError(() => new Error('API Error')));
     
     component.loadUnsuccessfulExample();
     tick();
@@ -136,7 +142,7 @@ describe('NetworkTestComponent', () => {
       network_output: [0.1, 0.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
     };
     
-    neuralNetworkServiceSpy.getExamples.and.returnValue(of(mockExample));
+    (neuralNetworkServiceSpy.getExamples as jest.Mock).mockReturnValue(of(mockExample));
     
     component.generateExamples();
     tick();

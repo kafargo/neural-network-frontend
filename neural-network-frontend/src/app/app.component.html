@@ -1,9 +1,9 @@
 <header>
   <div class="header-content">
     <app-navigation
-      [activeSection]="appState.activeSection"
-      [networkId]="appState.networkId"
-      [trainingComplete]="appState.trainingComplete"
+      [activeSection]="appState.activeSection()"
+      [networkId]="appState.networkId()"
+      [trainingComplete]="appState.trainingComplete()"
       (sectionChange)="onSectionChange($event)"
     >
     </app-navigation>

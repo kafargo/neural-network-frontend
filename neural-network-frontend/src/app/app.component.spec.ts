@@ -52,6 +52,7 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Neural Network Demo');
+    // The header displays 'Kevin Fargo' as the main title in the navigation component
+    expect(compiled.querySelector('h1')?.textContent).toContain('Kevin Fargo');
   });
 });

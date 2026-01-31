@@ -19,8 +19,8 @@ describe('NavigationComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should allow navigation to learn section', () => {
-    expect(component.canNavigateToSection('learn')).toBe(true);
+  it('should allow navigation to about section', () => {
+    expect(component.canNavigateToSection('about')).toBe(true);
   });
 
   it('should allow navigation to create section', () => {
@@ -50,7 +50,7 @@ describe('NavigationComponent', () => {
   });
 
   it('should emit section change when switching sections', () => {
-    spyOn(component.sectionChange, 'emit');
+    jest.spyOn(component.sectionChange, 'emit');
     component.switchSection('create');
     expect(component.sectionChange.emit).toHaveBeenCalledWith('create');
   });
