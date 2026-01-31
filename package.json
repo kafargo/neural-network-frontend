@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "description": "Neural Network Angular Demo - Railway Deployment Root",
   "scripts": {
-    "build": "cd neural-network-frontend && npm ci && npm run build:prod",
+    "build": "cd neural-network-frontend && npm run build:prod",
     "postbuild": "echo 'Build completed' && ls -la neural-network-frontend/dist/",
     "start": "cd neural-network-frontend && node server.js",
-    "prestart": "echo 'Starting app...' && echo 'PORT:' $PORT && echo 'NODE_ENV:' $NODE_ENV",
-    "install-deps": "cd neural-network-frontend && npm ci"
+    "prestart": "echo 'Starting app...' && echo 'PORT:' $PORT && echo 'NODE_ENV:' $NODE_ENV"
   },
   "engines": {
     "node": ">=18.0.0"
