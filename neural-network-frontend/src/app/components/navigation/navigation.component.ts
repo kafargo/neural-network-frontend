@@ -36,4 +36,12 @@ export class NavigationComponent {
         return false;
     }
   }
+
+  goHome(): void {
+    this.sectionChange.emit('about');
+  }
+
+  isOnAboutPage(): boolean {
+    return this.activeSection === 'about';
+  }
 }

@@ -4,7 +4,7 @@ export const routes: Routes = [
   { path: '', redirectTo: '/about', pathMatch: 'full' },
   { 
     path: 'about', 
-    loadComponent: () => import('./components/learn/learn.component').then(m => m.LearnComponent)
+    loadComponent: () => import('./components/about/about.component').then(m => m.AboutComponent)
   },
   { 
     path: 'create', 

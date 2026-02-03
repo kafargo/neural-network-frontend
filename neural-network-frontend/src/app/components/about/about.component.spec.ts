@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { LearnComponent } from './learn.component';
+import { AboutComponent } from './about.component';
 import { AppStateService } from '../../services/app-state.service';
 
-describe('LearnComponent', () => {
-  let component: LearnComponent;
-  let fixture: ComponentFixture<LearnComponent>;
+describe('AboutComponent', () => {
+  let component: AboutComponent;
+  let fixture: ComponentFixture<AboutComponent>;
   let routerSpy: jest.Mocked<Partial<Router>>;
   let appStateSpy: jest.Mocked<Partial<AppStateService>>;
 
@@ -18,7 +18,7 @@ describe('LearnComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [LearnComponent],
+      imports: [AboutComponent],
       providers: [
         { provide: Router, useValue: routerSpyObj },
         { provide: AppStateService, useValue: appStateSpyObj }
@@ -27,7 +27,7 @@ describe('LearnComponent', () => {
 
     routerSpy = TestBed.inject(Router) as jest.Mocked<Partial<Router>>;
     appStateSpy = TestBed.inject(AppStateService) as jest.Mocked<Partial<AppStateService>>;
-    fixture = TestBed.createComponent(LearnComponent);
+    fixture = TestBed.createComponent(AboutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

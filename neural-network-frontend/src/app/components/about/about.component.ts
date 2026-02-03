@@ -4,13 +4,13 @@ import { Router } from '@angular/router';
 import { AppStateService } from '../../services/app-state.service';
 
 @Component({
-  selector: 'app-learn',
+  selector: 'app-about',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './learn.component.html',
-  styleUrls: ['./learn.component.css']
+  templateUrl: './about.component.html',
+  styleUrls: ['./about.component.css']
 })
-export class LearnComponent {
+export class AboutComponent {
   constructor(
     private router: Router,
     private appState: AppStateService

@@ -6,22 +6,8 @@
         <p>Software Engineer | Machine Learning Portfolio</p>
       </div>
 
-      <!-- Navigation Header -->
-      <nav class="header-navigation">
-        <div
-          class="nav-section"
-          [class.active]="activeSection === 'about'"
-          [class.clickable]="canNavigateToSection('about')"
-          (click)="switchSection('about')"
-        >
-          <span class="nav-number">1</span>
-          <span class="nav-label">About Me</span>
-        </div>
-
-        <div class="nav-arrow">
-          <img src="assets/right-arrow.svg" alt="arrow" />
-        </div>
-
+      <!-- Navigation Header - shown on create, train, and test pages (not on about) -->
+      <nav class="header-navigation" *ngIf="!isOnAboutPage()">
         <div
           class="nav-section"
           [class.active]="activeSection === 'create'"
@@ -60,6 +46,19 @@
           <span class="nav-label">Test Network</span>
         </div>
       </nav>
+
+      <!-- Home button - shown on create, train, and test pages (not on about) -->
+      <button
+        *ngIf="!isOnAboutPage()"
+        class="home-button"
+        (click)="goHome()"
+        title="Return to About"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </svg>
+        <span>Home</span>
+      </button>
 
       <a
         href="https://github.com/kafargo"
