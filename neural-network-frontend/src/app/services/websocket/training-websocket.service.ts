@@ -19,6 +19,7 @@ export interface ConnectionStatus {
 })
 export class TrainingWebSocketService implements OnDestroy {
   private socket!: Socket; // Non-null assertion as it will be initialized in initializeConnection
+  private keepaliveTimer?: ReturnType<typeof setInterval>;
   private readonly connectionStatus = new BehaviorSubject<ConnectionStatus>({
     connected: false
   });
@@ -51,9 +52,9 @@ export class TrainingWebSocketService implements OnDestroy {
       autoConnect: true,
       forceNew: false,
       multiplex: true,
-      // Keepalive configuration for long-running operations
-      pingInterval: 45000, // Send ping every 45 seconds
-      pingTimeout: 30000,  // Wait 30 seconds for pong response before considering connection dead
+      // Note: pingInterval/pingTimeout are server-side settings
+      // The client automatically responds to server pings
+      // Ensure your backend configures appropriate ping intervals for long operations
     });
 
     // Connection event handlers
@@ -63,11 +64,13 @@ export class TrainingWebSocketService implements OnDestroy {
         connected: true,
         socketId: this.socket.id
       });
+      this.startKeepalive();
     });
 
     this.socket.on('disconnect', (reason) => {
       this.logger.log('⚠️ Disconnected from training WebSocket:', reason);
       this.connectionStatus.next({ connected: false });
+      this.stopKeepalive();
     });
 
     this.socket.on('connect_error', (error) => {
@@ -185,6 +188,27 @@ export class TrainingWebSocketService implements OnDestroy {
     return this.socket?.connected || false;
   }
 
+  // Client-side keepalive to prevent idle connection timeouts
+  private startKeepalive(): void {
+    this.stopKeepalive(); // Clear any existing timer
+    
+    // Send a lightweight keepalive message every 30 seconds
+    // This helps keep the connection alive through proxies and load balancers
+    this.keepaliveTimer = setInterval(() => {
+      if (this.socket?.connected) {
+        this.socket.emit('keepalive', { timestamp: Date.now() });
+        this.logger.log('💓 Keepalive sent');
+      }
+    }, 30000);
+  }
+
+  private stopKeepalive(): void {
+    if (this.keepaliveTimer) {
+      clearInterval(this.keepaliveTimer);
+      this.keepaliveTimer = undefined;
+    }
+  }
+
   // Manually reconnect
   reconnect(): void {
     if (this.socket) {
@@ -201,6 +225,7 @@ export class TrainingWebSocketService implements OnDestroy {
 
   // Cleanup on service destroy
   ngOnDestroy(): void {
+    this.stopKeepalive();
     this.disconnect();
   }
 }
