@@ -70,9 +70,10 @@ export class NetworkTrainingComponent implements OnInit, OnDestroy {
     this.websocketService.getTrainingUpdates()
       .pipe(takeUntil(this.destroy$))
       .subscribe(update => {
-        if (update && (!this.currentJobId || update.job_id === this.currentJobId)) {
+        // Only process updates if we're actively training
+        if (update && this.isTraining && (!this.currentJobId || update.job_id === this.currentJobId)) {
           // Accept updates if we don't have a job ID yet, or if it matches
-          if (!this.currentJobId && this.isTraining) {
+          if (!this.currentJobId) {
             this.currentJobId = update.job_id;
           }
           this.handleTrainingUpdate(update);
@@ -83,7 +84,7 @@ export class NetworkTrainingComponent implements OnInit, OnDestroy {
     this.websocketService.getTrainingComplete()
       .pipe(takeUntil(this.destroy$))
       .subscribe(completion => {
-        if (completion && (!this.currentJobId || completion.job_id === this.currentJobId)) {
+        if (completion && this.isTraining && (!this.currentJobId || completion.job_id === this.currentJobId)) {
           this.handleTrainingComplete(completion);
         }
       });
@@ -92,7 +93,7 @@ export class NetworkTrainingComponent implements OnInit, OnDestroy {
     this.websocketService.getTrainingError()
       .pipe(takeUntil(this.destroy$))
       .subscribe(error => {
-        if (error && (!this.currentJobId || error.job_id === this.currentJobId)) {
+        if (error && this.isTraining && (!this.currentJobId || error.job_id === this.currentJobId)) {
           this.handleTrainingError(error);
         }
       });
@@ -124,6 +125,7 @@ export class NetworkTrainingComponent implements OnInit, OnDestroy {
     this.finalAccuracy = null;
     this.currentTraining = null;
     this.trainingProgress = 0;
+    this.currentJobId = null; // Clear old job ID
     
     const config = {
       epochs: this.trainingConfig.epochs,

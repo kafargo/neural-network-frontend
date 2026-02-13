@@ -43,9 +43,11 @@ describe('NetworkTrainingComponent', () => {
     const websocketSpyObj = {
       connect: jest.fn(),
       disconnect: jest.fn(),
+      getConnectionStatus: jest.fn().mockReturnValue(of({ connected: true, socketId: 'test-socket-id' })),
       getTrainingUpdates: jest.fn().mockReturnValue(of()),
       getTrainingComplete: jest.fn().mockReturnValue(of()),
-      getTrainingError: jest.fn().mockReturnValue(of())
+      getTrainingError: jest.fn().mockReturnValue(of()),
+      resetTrainingData: jest.fn()
     };
     
     await TestBed.configureTestingModule({

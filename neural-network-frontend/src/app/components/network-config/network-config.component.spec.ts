@@ -9,6 +9,7 @@ import { NetworkConfigComponent } from './network-config.component';
 import { NeuralNetworkService } from '../../services/neural-network.service';
 import { AppStateService } from '../../services/app-state.service';
 import { LoggerService } from '../../services/logger.service';
+import { TrainingWebSocketService } from '../../services/websocket/training-websocket.service';
 import { NetworkCreateResponse } from '../../interfaces/neural-network.interface';
 
 describe('NetworkConfigComponent', () => {
@@ -18,6 +19,7 @@ describe('NetworkConfigComponent', () => {
   let routerSpy: jest.Mocked<Partial<Router>>;
   let appStateSpy: Partial<AppStateService>;
   let loggerSpy: jest.Mocked<Partial<LoggerService>>;
+  let websocketSpy: jest.Mocked<Partial<TrainingWebSocketService>>;
 
   beforeEach(async () => {
     const networkSpy = {
@@ -30,10 +32,15 @@ describe('NetworkConfigComponent', () => {
       setNetworkId: jest.fn(),
       setActiveSection: jest.fn(),
       setNetworkConfig: jest.fn(),
+      setTrainingComplete: jest.fn(),
+      setFinalAccuracy: jest.fn(),
       networkConfig: signal({ hiddenLayer1: 128, hiddenLayer2: 64, useSecondLayer: true, layerSizes: [784, 128, 64, 10] })
     };
     const loggerSpyObj = {
       error: jest.fn()
+    };
+    const websocketSpyObj = {
+      resetTrainingData: jest.fn()
     };
     
     await TestBed.configureTestingModule({
@@ -42,7 +49,8 @@ describe('NetworkConfigComponent', () => {
         { provide: NeuralNetworkService, useValue: networkSpy },
         { provide: Router, useValue: routerSpyObj },
         { provide: AppStateService, useValue: appStateSpyObj },
-        { provide: LoggerService, useValue: loggerSpyObj }
+        { provide: LoggerService, useValue: loggerSpyObj },
+        { provide: TrainingWebSocketService, useValue: websocketSpyObj }
       ]
     }).compileComponents();
 
@@ -50,6 +58,7 @@ describe('NetworkConfigComponent', () => {
     routerSpy = TestBed.inject(Router) as jest.Mocked<Partial<Router>>;
     appStateSpy = TestBed.inject(AppStateService) as Partial<AppStateService>;
     loggerSpy = TestBed.inject(LoggerService) as jest.Mocked<Partial<LoggerService>>;
+    websocketSpy = TestBed.inject(TrainingWebSocketService) as jest.Mocked<Partial<TrainingWebSocketService>>;
     fixture = TestBed.createComponent(NetworkConfigComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
