@@ -41,7 +41,7 @@ export class TrainingWebSocketService implements OnDestroy {
     
     this.socket = io(this.serverUrl, {
       transports: ['polling', 'websocket'], // Try polling first, then upgrade to websocket
-      timeout: 60000, // Increase timeout to 60 seconds
+      timeout: 20000, // Initial connection timeout (20s)
       reconnection: true,
       reconnectionAttempts: 10,
       reconnectionDelay: 2000,
@@ -51,6 +51,9 @@ export class TrainingWebSocketService implements OnDestroy {
       autoConnect: true,
       forceNew: false,
       multiplex: true,
+      // Keepalive configuration for long-running operations
+      pingInterval: 45000, // Send ping every 45 seconds
+      pingTimeout: 30000,  // Wait 30 seconds for pong response before considering connection dead
     });
 
     // Connection event handlers
@@ -80,6 +83,23 @@ export class TrainingWebSocketService implements OnDestroy {
 
     this.socket.on('reconnect_failed', () => {
       this.logger.error('❌ Reconnection failed after all attempts');
+    });
+
+    this.socket.on('reconnect', (attemptNumber) => {
+      this.logger.log(`✅ Reconnected successfully after ${attemptNumber} attempts`);
+      this.connectionStatus.next({
+        connected: true,
+        socketId: this.socket.id
+      });
+    });
+
+    // Keepalive monitoring
+    this.socket.on('ping', () => {
+      this.logger.log('📡 Ping sent to server');
+    });
+
+    this.socket.on('pong', (latency) => {
+      this.logger.log(`📡 Pong received (latency: ${latency}ms)`);
     });
 
     // Training update handler

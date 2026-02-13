@@ -77,6 +77,12 @@
       </div>
     </div>
 
+    <!-- Connection Warning -->
+    <div class="connection-warning" *ngIf="connectionWarning">
+      <span class="warning-icon">⚠️</span>
+      {{ connectionWarning }}
+    </div>
+
     <!-- Training Progress -->
     <app-training-progress
       *ngIf="trainingStarted || finalAccuracy"

@@ -42,12 +42,29 @@ export class NetworkTrainingComponent implements OnInit, OnDestroy {
   finalAccuracy: number | null = null;
   currentTraining: TrainingUpdate | null = null;
   error: string | null = null;
+  connectionWarning: string | null = null;
+  isConnected = false;
 
   ngOnInit(): void {
     // Load state from the service (signals)
     this.networkId = this.appState.networkId();
     this.trainingConfig = { ...this.appState.trainingConfig() };
     this.finalAccuracy = this.appState.finalAccuracy();
+
+    // Monitor WebSocket connection status
+    this.websocketService.getConnectionStatus()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(status => {
+        this.isConnected = status.connected;
+        
+        if (!status.connected && this.isTraining) {
+          this.connectionWarning = 'Connection to server lost. Attempting to reconnect...';
+          this.logger.warn('⚠️ WebSocket disconnected during training');
+        } else if (status.connected && this.connectionWarning) {
+          this.connectionWarning = null;
+          this.logger.log('✅ WebSocket reconnected - training updates should resume');
+        }
+      });
 
     // Subscribe to training updates
     this.websocketService.getTrainingUpdates()
@@ -96,8 +113,14 @@ export class NetworkTrainingComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (!this.isConnected) {
+      this.error = 'WebSocket not connected. Please wait for connection to be established.';
+      return;
+    }
+
     this.trainingLoading = true;
     this.error = null;
+    this.connectionWarning = null;
     this.finalAccuracy = null;
     this.currentTraining = null;
     this.trainingProgress = 0;
