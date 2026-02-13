@@ -9,7 +9,7 @@
     "prestart": "echo 'Starting app...' && echo 'PORT:' $PORT && echo 'NODE_ENV:' $NODE_ENV"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "private": true
 }
