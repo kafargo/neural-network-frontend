@@ -209,6 +209,14 @@ export class TrainingWebSocketService implements OnDestroy {
     }
   }
 
+  // Reset all training data (call when creating a new network)
+  resetTrainingData(): void {
+    this.logger.log('🔄 Resetting all training data');
+    this.trainingUpdates.next(null);
+    this.trainingComplete.next(null);
+    this.trainingError.next(null);
+  }
+
   // Manually reconnect
   reconnect(): void {
     if (this.socket) {

@@ -6,6 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { NeuralNetworkService } from '../../services/neural-network.service';
 import { AppStateService } from '../../services/app-state.service';
 import { LoggerService } from '../../services/logger.service';
+import { TrainingWebSocketService } from '../../services/websocket/training-websocket.service';
 import { NetworkConfig } from '../../interfaces/neural-network.interface';
 
 @Component({
@@ -23,6 +24,7 @@ export class NetworkConfigComponent implements OnInit, OnDestroy {
   private readonly neuralNetworkService = inject(NeuralNetworkService);
   private readonly appState = inject(AppStateService);
   private readonly logger = inject(LoggerService);
+  private readonly websocketService = inject(TrainingWebSocketService);
   
   config: NetworkConfig = {
     hiddenLayer1: 128,
@@ -71,6 +73,11 @@ export class NetworkConfigComponent implements OnInit, OnDestroy {
         next: (response) => {
           this.loading = false;
           this.appState.setNetworkId(response.network_id);
+          // Clear old training state when creating a new network
+          this.appState.setTrainingComplete(false);
+          this.appState.setFinalAccuracy(null);
+          // Clear WebSocket training data to prevent old events from being processed
+          this.websocketService.resetTrainingData();
           this.appState.setActiveSection('train');
           this.router.navigate(['/train']);
         },
