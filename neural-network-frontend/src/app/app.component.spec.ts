@@ -52,7 +52,7 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    // The header displays 'Kevin Fargo' as the main title in the navigation component
-    expect(compiled.querySelector('h1')?.textContent).toContain('Kevin Fargo');
+    // The header displays 'Kevin (Alex) Fargo' as the main title in the navigation component
+    expect(compiled.querySelector('h1')?.textContent).toContain('Kevin (Alex) Fargo');
   });
 });
