@@ -110,11 +110,13 @@ export class AboutComponent {
    * Reset the about content to the original hardcoded version.
    *
    * Clears custom content, prompt, and any error messages.
+   * Closes the modal after reset.
    */
   resetAbout(): void {
     this.customAboutMe = null;
     this.customSkills = null;
     this.userPrompt = '';
     this.errorMessage = '';
+    this.showPromptInput = false;
   }
 }
