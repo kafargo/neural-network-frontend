@@ -139,6 +139,7 @@
               [(ngModel)]="userPrompt"
               placeholder="e.g., Make it sound more technical and focus on backend experience..."
               rows="4"
+              (keydown.enter)="onEnterKey($any($event))"
             ></textarea>
             @if (errorMessage) {
               <div class="error-message">{{ errorMessage }}</div>

@@ -61,6 +61,20 @@ export class AboutComponent {
   }
 
   /**
+   * Handle Enter key press in the prompt textarea.
+   *
+   * Enter triggers generation, Shift+Enter allows newlines.
+   *
+   * @param event - The keyboard event from the textarea.
+   */
+  onEnterKey(event: KeyboardEvent): void {
+    if (!event.shiftKey && !this.isLoading) {
+      event.preventDefault();
+      this.generateCustomAbout();
+    }
+  }
+
+  /**
    * Call the backend AI endpoint to generate customized content.
    *
    * Splits the about_me response into paragraphs and stores
