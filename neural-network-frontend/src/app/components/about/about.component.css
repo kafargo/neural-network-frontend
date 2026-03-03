@@ -307,6 +307,169 @@
   font-size: 1.5rem !important;
 }
 
+/* Customize Section */
+.customize-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.customize-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #1a3263 0%, #547792 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(26, 50, 99, 0.2);
+}
+
+.customize-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(26, 50, 99, 0.3);
+}
+
+.prompt-area {
+  width: 100%;
+  max-width: 700px;
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e8e8e8;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.prompt-area label {
+  display: block;
+  color: #333;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.prompt-area textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  line-height: 1.5;
+  resize: vertical;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+  color: #333;
+  background: #fafafa;
+}
+
+.prompt-area textarea:focus {
+  outline: none;
+  border-color: #547792;
+  background: white;
+}
+
+.prompt-area textarea::placeholder {
+  color: #999;
+}
+
+.prompt-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.generate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fab95b;
+  color: #1a3263;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.generate-btn:hover:not(:disabled) {
+  background: #f5a623;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(250, 185, 91, 0.4);
+}
+
+.generate-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.reset-btn {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  color: #547792;
+  border: 2px solid #547792;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reset-btn:hover {
+  background: #547792;
+  color: white;
+}
+
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(26, 50, 99, 0.3);
+  border-top-color: #1a3263;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error-message {
+  background: #fff3f3;
+  color: #c0392b;
+  padding: 12px 18px;
+  border-radius: 8px;
+  border: 1px solid #f5c6cb;
+  font-size: 0.9rem;
+  max-width: 700px;
+  width: 100%;
+  text-align: center;
+}
+
 /* CTA Section */
 .cta-section {
   text-align: center;
@@ -399,6 +562,14 @@
   .project-link {
     justify-content: center;
   }
+
+  .prompt-area {
+    padding: 20px;
+  }
+
+  .prompt-actions {
+    flex-direction: column;
+  }
 }
 
 /* Responsive Design - Mobile */
@@ -462,5 +633,14 @@
     font-size: 1rem;
     width: 100%;
     justify-content: center;
+  }
+
+  .customize-toggle {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .prompt-area {
+    padding: 16px;
   }
 }

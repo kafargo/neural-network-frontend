@@ -107,3 +107,17 @@ export interface NetworkVisualization {
     biases?: number[];
   }>;
 }
+
+export interface SkillCategory {
+  category: string;
+  tags: string[];
+}
+
+export interface AboutCustomizeRequest {
+  prompt: string;
+}
+
+export interface AboutCustomizeResponse {
+  about_me: string;
+  skills: SkillCategory[];
+}

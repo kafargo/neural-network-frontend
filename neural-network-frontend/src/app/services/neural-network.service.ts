@@ -7,7 +7,8 @@ import { LoggerService } from './logger.service';
 import {
   NetworkCreateResponse,
   TrainResponse,
-  NetworkExample
+  NetworkExample,
+  AboutCustomizeResponse
 } from '../interfaces/neural-network.interface';
 
 @Injectable({
@@ -112,5 +113,20 @@ export class NeuralNetworkService {
     } else {
       return this.getUnsuccessfulExample(networkId);
     }
+  }
+
+  /**
+   * Generate a customized About Me and Skills section using AI.
+   * Sends a user prompt to the backend which combines it with
+   * the work history file for grounded content generation.
+   * Used by: AboutComponent
+   */
+  customizeAbout(prompt: string): Observable<AboutCustomizeResponse> {
+    return this.http.post<AboutCustomizeResponse>(
+      `${this.apiUrl}/about/customize`,
+      { prompt }
+    ).pipe(
+      catchError(this.handleError.bind(this))
+    );
   }
 }

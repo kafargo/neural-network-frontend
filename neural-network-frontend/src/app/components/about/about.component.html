@@ -48,72 +48,148 @@
   <div class="about-content">
     <div class="about-card">
       <h2>About Me</h2>
-      <p>
-        With nearly 15 years in IT, I've journeyed from data center migrations
-        to the dynamic world of software engineering and product development. My
-        career took a pivotal turn at Charles Schwab, where I discovered the
-        power of software to drive real business outcomes—and I've been hooked
-        ever since.
-      </p>
-      <p>
-        I've worn many hats: <strong>business analyst</strong>,
-        <strong>scrum master</strong>,
-        <strong>software development manager</strong>, and now,
-        <strong>software engineer</strong>. This unique journey gives me a
-        perspective that few engineers have—I understand not just how to write
-        code, but how to lead teams, translate business needs into technical
-        solutions, and deliver value across the entire software development
-        lifecycle.
-      </p>
-      <p>
-        Whether I'm sketching out user stories, leading agile teams, or diving
-        into code, I thrive on solving problems and delivering impact. I'm
-        always learning, always building— and this neural network project is
-        just one example of my passion for continuous growth.
-      </p>
+      @if (customAboutMe) {
+        @for (paragraph of customAboutMe; track paragraph) {
+          <p>{{ paragraph }}</p>
+        }
+      } @else {
+        <p>
+          With nearly 15 years in IT, I've journeyed from data center migrations
+          to the dynamic world of software engineering and product development.
+          My career took a pivotal turn at Charles Schwab, where I discovered
+          the power of software to drive real business outcomes—and I've been
+          hooked ever since.
+        </p>
+        <p>
+          I've worn many hats: <strong>business analyst</strong>,
+          <strong>scrum master</strong>,
+          <strong>software development manager</strong>, and now,
+          <strong>software engineer</strong>. This unique journey gives me a
+          perspective that few engineers have—I understand not just how to write
+          code, but how to lead teams, translate business needs into technical
+          solutions, and deliver value across the entire software development
+          lifecycle.
+        </p>
+        <p>
+          Whether I'm sketching out user stories, leading agile teams, or diving
+          into code, I thrive on solving problems and delivering impact. I'm
+          always learning, always building— and this neural network project is
+          just one example of my passion for continuous growth.
+        </p>
+      }
+    </div>
+
+    <!-- Customize Section -->
+    <div class="customize-section">
+      <button class="customize-toggle" (click)="togglePromptInput()">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M12 20h9" />
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+        </svg>
+        {{ showPromptInput ? "Hide Customizer" : "Customize With AI" }}
+      </button>
+
+      @if (showPromptInput) {
+        <div class="prompt-area">
+          <label for="customizePrompt"
+            >How should the About Me and Skills sections read?</label
+          >
+          <textarea
+            id="customizePrompt"
+            [(ngModel)]="userPrompt"
+            placeholder="e.g., Make it sound more technical and focus on backend experience..."
+            rows="3"
+          ></textarea>
+          <div class="prompt-actions">
+            <button
+              class="generate-btn"
+              (click)="generateCustomAbout()"
+              [disabled]="isLoading"
+            >
+              @if (isLoading) {
+                <span class="spinner"></span>
+                Generating...
+              } @else {
+                Generate
+              }
+            </button>
+            @if (customAboutMe) {
+              <button class="reset-btn" (click)="resetAbout()">
+                Reset to Original
+              </button>
+            }
+          </div>
+        </div>
+      }
+
+      @if (errorMessage) {
+        <div class="error-message">{{ errorMessage }}</div>
+      }
     </div>
 
     <!-- Skills Section -->
     <div class="skills-section">
       <h2>Skills & Technologies</h2>
-      <div class="skills-grid">
-        <div class="skill-category">
-          <h3>Frontend</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">Angular</span>
-            <span class="skill-tag">TypeScript</span>
-            <span class="skill-tag">JavaScript</span>
-            <span class="skill-tag">Playwright</span>
+      @if (customSkills) {
+        <div class="skills-grid">
+          @for (category of customSkills; track category.category) {
+            <div class="skill-category">
+              <h3>{{ category.category }}</h3>
+              <div class="skill-tags">
+                @for (tag of category.tags; track tag) {
+                  <span class="skill-tag">{{ tag }}</span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="skills-grid">
+          <div class="skill-category">
+            <h3>Frontend</h3>
+            <div class="skill-tags">
+              <span class="skill-tag">Angular</span>
+              <span class="skill-tag">TypeScript</span>
+              <span class="skill-tag">JavaScript</span>
+              <span class="skill-tag">Playwright</span>
+            </div>
+          </div>
+          <div class="skill-category">
+            <h3>Backend</h3>
+            <div class="skill-tags">
+              <span class="skill-tag">.NET</span>
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">SQL</span>
+              <span class="skill-tag">REST APIs</span>
+            </div>
+          </div>
+          <div class="skill-category">
+            <h3>Leadership</h3>
+            <div class="skill-tags">
+              <span class="skill-tag">Scrum Master</span>
+              <span class="skill-tag">Dev Manager</span>
+              <span class="skill-tag">Agile/Kanban</span>
+              <span class="skill-tag">DORA Metrics</span>
+            </div>
+          </div>
+          <div class="skill-category">
+            <h3>Tools & DevOps</h3>
+            <div class="skill-tags">
+              <span class="skill-tag">GitHub Actions</span>
+              <span class="skill-tag">CI/CD</span>
+              <span class="skill-tag">Docker</span>
+              <span class="skill-tag">Camunda BPM</span>
+            </div>
           </div>
         </div>
-        <div class="skill-category">
-          <h3>Backend</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">.NET</span>
-            <span class="skill-tag">Python</span>
-            <span class="skill-tag">SQL</span>
-            <span class="skill-tag">REST APIs</span>
-          </div>
-        </div>
-        <div class="skill-category">
-          <h3>Leadership</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">Scrum Master</span>
-            <span class="skill-tag">Dev Manager</span>
-            <span class="skill-tag">Agile/Kanban</span>
-            <span class="skill-tag">DORA Metrics</span>
-          </div>
-        </div>
-        <div class="skill-category">
-          <h3>Tools & DevOps</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">GitHub Actions</span>
-            <span class="skill-tag">CI/CD</span>
-            <span class="skill-tag">Docker</span>
-            <span class="skill-tag">Camunda BPM</span>
-          </div>
-        </div>
-      </div>
+      }
     </div>
 
     <!-- Featured Project Section -->
