@@ -80,7 +80,7 @@ export class AboutComponent {
         this.customAboutMe = response.about_me
           .split('\n\n')
           .filter((p) => p.trim().length > 0);
-        this.customSkills = response.skills;
+        this.customSkills = response.skills ?? null;
         this.isLoading = false;
       },
       error: (err) => {

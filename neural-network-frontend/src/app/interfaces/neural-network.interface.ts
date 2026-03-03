@@ -119,5 +119,5 @@ export interface AboutCustomizeRequest {
 
 export interface AboutCustomizeResponse {
   about_me: string;
-  skills: SkillCategory[];
+  skills?: SkillCategory[];
 }
