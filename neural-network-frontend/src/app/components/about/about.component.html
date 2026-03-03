@@ -101,11 +101,11 @@
 
     <!-- Customize Modal -->
     @if (showPromptInput) {
-      <div class="modal-overlay" (click)="togglePromptInput()">
-        <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-overlay" [class.loading]="isLoading" (click)="!isLoading && togglePromptInput()">
+        <div class="modal-content" [class.loading]="isLoading" (click)="$event.stopPropagation()">
           <div class="modal-header">
             <h3>Customize About Me</h3>
-            <button class="modal-close" (click)="togglePromptInput()">
+            <button class="modal-close" (click)="togglePromptInput()" [disabled]="isLoading">
               <svg
                 width="20"
                 height="20"
@@ -134,7 +134,7 @@
           </div>
           <div class="modal-footer">
             @if (customAboutMe) {
-              <button class="reset-btn" (click)="resetAbout()">
+              <button class="reset-btn" (click)="resetAbout()" [disabled]="isLoading">
                 Reset to Original
               </button>
             }

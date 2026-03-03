@@ -82,6 +82,7 @@ export class AboutComponent {
           .filter((p) => p.trim().length > 0);
         this.customSkills = response.skills ?? null;
         this.isLoading = false;
+        this.showPromptInput = false;  // Close modal on success
       },
       error: (err) => {
         this.errorMessage =

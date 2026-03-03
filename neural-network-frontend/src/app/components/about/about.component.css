@@ -360,6 +360,29 @@
   animation: fadeIn 0.2s ease;
 }
 
+.modal-overlay.loading {
+  cursor: not-allowed;
+}
+
+.modal-content.loading {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.modal-content.loading .modal-body,
+.modal-content.loading .modal-footer {
+  pointer-events: none;
+}
+
+.modal-content.loading textarea {
+  background: #f0f0f0;
+}
+
+.modal-close:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -522,9 +545,14 @@
   transition: all 0.3s ease;
 }
 
-.reset-btn:hover {
+.reset-btn:hover:not(:disabled) {
   background: #547792;
   color: white;
+}
+
+.reset-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .spinner {
