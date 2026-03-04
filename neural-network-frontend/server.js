@@ -46,12 +46,33 @@ app.get("/health", (req, res) => {
 });
 
 // Serve static files from the Angular app build directory
+// Cache JS/CSS/assets for 1 year (they have content hashes)
+// But never cache HTML files
 app.use(
-  express.static(path.join(__dirname, "dist/neural-network-frontend/browser")),
+  express.static(path.join(__dirname, "dist/neural-network-frontend/browser"), {
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith(".html")) {
+        // Never cache HTML files
+        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        res.setHeader("Pragma", "no-cache");
+        res.setHeader("Expires", "0");
+      } else if (
+        filePath.endsWith(".js") ||
+        filePath.endsWith(".css") ||
+        filePath.match(/\.(woff2?|ttf|eot|svg|png|jpg|jpeg|gif|ico)$/)
+      ) {
+        // Cache fingerprinted assets for 1 year
+        res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+      }
+    },
+  }),
 );
 
 // Handle Angular routing - return all requests to Angular index.html
 app.get("*", (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
   res.sendFile(
     path.join(__dirname, "dist/neural-network-frontend/browser/index.html"),
   );
